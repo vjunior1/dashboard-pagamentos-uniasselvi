@@ -1,0 +1,49 @@
+Prompt gerencias:
+
+Segue o arquivo de hoje (YYYYMMDD_ENGAJAMENTO_GERENCIA.html) ainda sem edição, o arquivo de ontem (YYYYMMDD_ENGAJAMENTO_GERENCIA.html) já com a estrutura completa como referência de layout, e a tabela atualizada do Tipo de Turma abaixo.
+
+Sua tarefa é replicar exatamente a estrutura do arquivo de ontem no arquivo de hoje, alterando apenas os dados. Regras:
+
+Seção "Tipo de Turma": inclua apenas as 3 diretorias de operações (DIR. O.P., O.P. I, O.P. II), sem linha de total. Use os dados da tabela fornecida abaixo.
+CSS da seção Tipo de Turma: copie os estilos .turma-* do arquivo de ontem e adicione no <style> do arquivo de hoje — não altere nenhum outro estilo existente.
+Posicionamento: insira a seção Tipo de Turma entre a tabela de detalhamento e os insights, exatamente como no arquivo de ontem.
+Nenhum outro dado do arquivo de hoje deve ser alterado (KPIs, gráficos, tabela de detalhamento, insights permanecem intactos).
+Entregue apenas o arquivo .html final editado, sem explicações adicionais.
+
+Tabela Tipo de Turma — dados de hoje:
+
+[colar a tabela aqui]
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Prompt Carteiras:
+Segue a atualização diária do dashboard de carteiras.
+
+ARQUIVOS ANEXADOS:
+1. [DATA_ANTERIOR]_ENGAJAMENTO_CARTEIRAS.html → versão já editada/publicada do dia anterior (use como referência de LAYOUT e regras já aplicadas, ex.: carteiras removidas, seção "Tipo de Turma" já formatada).
+2. [DATA_ATUAL]_ENGAJAMENTO_CARTEIRAS.html → arquivo bruto/não editado de hoje, gerado direto do sistema (dados corretos, mas ainda sem os ajustes de padronização).
+3. Tabela "Tipo de Turma" atualizada de hoje (colada abaixo ou em anexo).
+
+O QUE FAZER:
+Gere o arquivo final de hoje ([DATA_ATUAL]_ENGAJAMENTO_CARTEIRAS.html) partindo do arquivo BRUTO de hoje (#2), aplicando o mesmo padrão de ajustes usado no arquivo editado de ontem (#1). Especificamente:
+
+1. Compare a lista de carteiras (seção "group" da tabela Detalhamento Geral e os gráficos do topo) do arquivo bruto de hoje com o arquivo editado de ontem:
+   - Se alguma carteira presente no bruto de hoje NÃO aparece mais no editado de ontem (ou eu indicar explicitamente que não existe mais), remova essa carteira de TODOS os lugares onde ela aparece: os 3 gráficos do topo (Taxa de Engajamento, Pagamentos por Carteira, Avaliações por Carteira), a tabela Detalhamento Geral (grupo + linhas Calouro/Veterano/Winback + linha Total Geral) e a seção Tipo de Turma.
+   - Se surgir uma carteira nova que não existia ontem, mantenha ela normalmente em todas as seções (não remova).
+   - Não altere KPIs gerais do topo (Base Total, Engajados, Pagamentos, Avaliações, Acessos) nem os textos de Insights, a menos que eu peça explicitamente — eles vêm prontos do arquivo bruto.
+
+2. Atualize a seção "Tipo de Turma" com os dados da tabela que enviei, seguindo estas regras:
+   - Inclua apenas as carteiras que já existem na seção Tipo de Turma do arquivo de ontem (ou a lista vigente, caso eu indique mudança).
+   - NÃO inclua a linha "Total Geral" da tabela.
+   - Ignore linhas de gerência que não sejam as carteiras nomeadas (ex.: "Sem funcionário cadastrado", "Diretoria OP", "Operações I/II") — essas nunca entram nessa seção.
+   - Use exatamente o % de engajamento e os valores Qtd/Base fornecidos na tabela (não recalcule, apenas formate: milhar com ponto, percentual com vírgula e 2 casas).
+   - Mantenha a mesma ordem das carteiras usada no arquivo do dia anterior.
+
+3. Preserve 100% do CSS, das classes e da estrutura HTML do arquivo bruto de hoje — os ajustes acima são as ÚNICAS mudanças estruturais. Se o arquivo bruto de hoje não tiver a seção/CSS "Tipo de Turma", adicione copiando exatamente do arquivo de ontem.
+
+4. Ao final, me diga em texto curto (não dentro do HTML): quais carteiras foram removidas/adicionadas hoje e se algum número da tabela Tipo de Turma não bateu com nenhuma carteira esperada (para eu conferir).
+
+Antes de gerar o arquivo final, confirme comigo apenas se algo estiver ambíguo (ex.: carteira nova sem posição óbvia na ordem, ou dado faltante na tabela). Caso contrário, gere o arquivo direto.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
