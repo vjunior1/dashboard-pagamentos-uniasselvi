@@ -1,49 +1,324 @@
-Prompt gerencias:
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-Segue o arquivo de hoje (YYYYMMDD_ENGAJAMENTO_GERENCIA.html) ainda sem edição, o arquivo de ontem (YYYYMMDD_ENGAJAMENTO_GERENCIA.html) já com a estrutura completa como referência de layout, e a tabela atualizada do Tipo de Turma abaixo.
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard de Metas | UNIASSELVI</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
 
-Sua tarefa é replicar exatamente a estrutura do arquivo de ontem no arquivo de hoje, alterando apenas os dados. Regras:
+<body>
 
-Seção "Tipo de Turma": inclua apenas as 3 diretorias de operações (DIR. O.P., O.P. I, O.P. II), sem linha de total. Use os dados da tabela fornecida abaixo.
-CSS da seção Tipo de Turma: copie os estilos .turma-* do arquivo de ontem e adicione no <style> do arquivo de hoje — não altere nenhum outro estilo existente.
-Posicionamento: insira a seção Tipo de Turma entre a tabela de detalhamento e os insights, exatamente como no arquivo de ontem.
-Nenhum outro dado do arquivo de hoje deve ser alterado (KPIs, gráficos, tabela de detalhamento, insights permanecem intactos).
-Entregue apenas o arquivo .html final editado, sem explicações adicionais.
+  <main class="page">
 
-Tabela Tipo de Turma — dados de hoje:
+    <section class="panel panel--top-dashboard">
+      <div class="panel-bg-text">UNIASSELVI</div>
 
-[colar a tabela aqui]
+      <div class="panel-header">
+        <div class="brand">
+          <span class="brand-icon">📊</span>
+          <div class="brand-text">
+            <h1>Pagamentos</h1>
+            <p class="brand-sub">Monitoramento em tempo real do volume de pagantes com base no relatório do portal comercial.</p>
+          </div>
+        </div>
 
+        <div class="update-wrapper">
+          <div class="timestamp-badge">
+            <span class="status-dot" id="statusDot"></span>
+            <span class="timestamp-label">Atualizado às:</span>
+            <span class="timestamp-value" id="statusText">--:--</span>
+          </div>
+          <button class="refresh-btn" id="refreshBtn">
+            <span class="refresh-icon">⟳</span>
+            Atualizar dados
+          </button>
+        </div>
+      </div>
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      <!-- Cards KPI: Volume Geral | Meta Móvel | % Meta Móvel | Meta Edital | % Meta Edital -->
+      <div class="panel-stats-grouped" id="panelStats">
 
-Prompt Carteiras:
-Segue a atualização diária do dashboard de carteiras.
+        <!-- KPI Principal: Volume Geral -->
+        <div class="stat-group stat-group--main">
+          <span class="stat-label-group">Volume Geral</span>
+          <div class="stat-main-box">
+            <span class="stat-value-large" id="cardPagantes">--</span>
+            <span class="stat-sublabel">Total de Pagantes</span>
+          </div>
+        </div>
 
-ARQUIVOS ANEXADOS:
-1. [DATA_ANTERIOR]_ENGAJAMENTO_CARTEIRAS.html → versão já editada/publicada do dia anterior (use como referência de LAYOUT e regras já aplicadas, ex.: carteiras removidas, seção "Tipo de Turma" já formatada).
-2. [DATA_ATUAL]_ENGAJAMENTO_CARTEIRAS.html → arquivo bruto/não editado de hoje, gerado direto do sistema (dados corretos, mas ainda sem os ajustes de padronização).
-3. Tabela "Tipo de Turma" atualizada de hoje (colada abaixo ou em anexo).
+        <!-- Grupo: Meta Móvel -->
+        <div class="stat-group">
+          <span class="stat-label-group">Meta Móvel</span>
+          <div class="stat-split-box">
+            <div class="stat-sub-item">
+              <span class="stat-value-grouped" id="cardMetaMovel">--</span>
+              <span class="stat-sublabel">Esperado</span>
+            </div>
+            <div class="stat-sub-item border-left">
+              <span class="stat-value-grouped percent" id="cardMetaMovelPct">--</span>
+              <span class="stat-sublabel">Atingido</span>
+            </div>
+          </div>
+        </div>
 
-O QUE FAZER:
-Gere o arquivo final de hoje ([DATA_ATUAL]_ENGAJAMENTO_CARTEIRAS.html) partindo do arquivo BRUTO de hoje (#2), aplicando o mesmo padrão de ajustes usado no arquivo editado de ontem (#1). Especificamente:
+        <!-- Grupo: Meta Edital -->
+        <div class="stat-group">
+          <span class="stat-label-group">Meta Edital</span>
+          <div class="stat-split-box">
+            <div class="stat-sub-item">
+              <span class="stat-value-grouped" id="cardMetaEdital">--</span>
+              <span class="stat-sublabel">Alvo</span>
+            </div>
+            <div class="stat-sub-item border-left">
+              <span class="stat-value-grouped percent" id="cardMetaEditalPct">--</span>
+              <span class="stat-sublabel">Progresso</span>
+            </div>
+          </div>
+        </div>
 
-1. Compare a lista de carteiras (seção "group" da tabela Detalhamento Geral e os gráficos do topo) do arquivo bruto de hoje com o arquivo editado de ontem:
-   - Se alguma carteira presente no bruto de hoje NÃO aparece mais no editado de ontem (ou eu indicar explicitamente que não existe mais), remova essa carteira de TODOS os lugares onde ela aparece: os 3 gráficos do topo (Taxa de Engajamento, Pagamentos por Carteira, Avaliações por Carteira), a tabela Detalhamento Geral (grupo + linhas Calouro/Veterano/Winback + linha Total Geral) e a seção Tipo de Turma.
-   - Se surgir uma carteira nova que não existia ontem, mantenha ela normalmente em todas as seções (não remova).
-   - Não altere KPIs gerais do topo (Base Total, Engajados, Pagamentos, Avaliações, Acessos) nem os textos de Insights, a menos que eu peça explicitamente — eles vêm prontos do arquivo bruto.
+      </div>
+    </section>
 
-2. Atualize a seção "Tipo de Turma" com os dados da tabela que enviei, seguindo estas regras:
-   - Inclua apenas as carteiras que já existem na seção Tipo de Turma do arquivo de ontem (ou a lista vigente, caso eu indique mudança).
-   - NÃO inclua a linha "Total Geral" da tabela.
-   - Ignore linhas de gerência que não sejam as carteiras nomeadas (ex.: "Sem funcionário cadastrado", "Diretoria OP", "Operações I/II") — essas nunca entram nessa seção.
-   - Use exatamente o % de engajamento e os valores Qtd/Base fornecidos na tabela (não recalcule, apenas formate: milhar com ponto, percentual com vírgula e 2 casas).
-   - Mantenha a mesma ordem das carteiras usada no arquivo do dia anterior.
+    <section class="panel panel--carteiras">
+      <div class="panel-header">
+        <div class="brand">
+          <span class="brand-icon">🗂️</span>
+          <div class="brand-text">
+            <h1>Gerências</h1>
+            <p class="brand-sub">Resumo dos indicadores por gerência</p>
+          </div>
+        </div>
+      </div>
 
-3. Preserve 100% do CSS, das classes e da estrutura HTML do arquivo bruto de hoje — os ajustes acima são as ÚNICAS mudanças estruturais. Se o arquivo bruto de hoje não tiver a seção/CSS "Tipo de Turma", adicione copiando exatamente do arquivo de ontem.
+      <div class="gerencias-grid">
+        <div class="gerencias-col">
+          <div class="gerencias-col-title">
+            <span>Carteiras</span>
+            <span>Pagantes</span>
+            <span>Meta Móvel</span>
+            <span>% Meta Móvel</span>
+            <span>Meta Edital</span>
+            <span>% Meta Edital</span>
+          </div>
+          <div class="gerencia-row" data-codigo="100000090"><span class="gerencia-nome">Gerente Florença <small>Kelly Strutz</small></span><span class="gerencia-pagantes">--</span><span class="gerencia-metamovel">--</span><span class="gerencia-pct">--</span><span class="gerencia-metaedital">--</span><span class="gerencia-pctedital">--</span><button class="gerencia-export-btn" title="Baixar polos desta carteira em Excel" aria-label="Baixar Excel">⬇</button></div>
+          <div class="gerencia-row" data-codigo="17843"><span class="gerencia-nome">Gerente Gênova <small>Jéssica Aparecida Leoni</small></span><span class="gerencia-pagantes">--</span><span class="gerencia-metamovel">--</span><span class="gerencia-pct">--</span><span class="gerencia-metaedital">--</span><span class="gerencia-pctedital">--</span><button class="gerencia-export-btn" title="Baixar polos desta carteira em Excel" aria-label="Baixar Excel">⬇</button></div>
+          <div class="gerencia-row" data-codigo="18881"><span class="gerencia-nome">Gerente Milão <small>João Block</small></span><span class="gerencia-pagantes">--</span><span class="gerencia-metamovel">--</span><span class="gerencia-pct">--</span><span class="gerencia-metaedital">--</span><span class="gerencia-pctedital">--</span><button class="gerencia-export-btn" title="Baixar polos desta carteira em Excel" aria-label="Baixar Excel">⬇</button></div>
+          <div class="gerencia-row" data-codigo="100000929"><span class="gerencia-nome">Gerente Roma <small>Marina Veloso</small></span><span class="gerencia-pagantes">--</span><span class="gerencia-metamovel">--</span><span class="gerencia-pct">--</span><span class="gerencia-metaedital">--</span><span class="gerencia-pctedital">--</span><button class="gerencia-export-btn" title="Baixar polos desta carteira em Excel" aria-label="Baixar Excel">⬇</button></div>
+          <!--<div class="gerencia-row" data-codigo="13173"><span class="gerencia-nome">Gerente Veneza <small>Reginei Novais</small></span><span class="gerencia-pagantes">--</span><span class="gerencia-metamovel">--</span><span class="gerencia-pct">--</span><span class="gerencia-metaedital">--</span><span class="gerencia-pctedital">--</span><button class="gerencia-export-btn" title="Baixar polos desta carteira em Excel" aria-label="Baixar Excel">⬇</button></div>-->
+        </div>
 
-4. Ao final, me diga em texto curto (não dentro do HTML): quais carteiras foram removidas/adicionadas hoje e se algum número da tabela Tipo de Turma não bateu com nenhuma carteira esperada (para eu conferir).
+        <div class="gerencias-col">
+          <div class="gerencias-col-title">
+            <span>Operações</span>
+            <span>Pagantes</span>
+            <span>Meta Móvel</span>
+            <span>% Meta Móvel</span>
+            <span>Meta Edital</span>
+            <span>% Meta Edital</span>
+          </div>
+          <div class="gerencia-row" data-codigo="100029673"><span class="gerencia-nome">Gerente Diretoria OP <small>Alessandra Baron Eugenio</small></span><span class="gerencia-pagantes">--</span><span class="gerencia-metamovel">--</span><span class="gerencia-pct">--</span><span class="gerencia-metaedital">--</span><span class="gerencia-pctedital">--</span><button class="gerencia-export-btn" title="Baixar polos desta carteira em Excel" aria-label="Baixar Excel">⬇</button></div>
+          <div class="gerencia-row" data-busca="Operações I"><span class="gerencia-nome">Gerente Operações I <small>Ary Oliveira Filho</small></span><span class="gerencia-pagantes">--</span><span class="gerencia-metamovel">--</span><span class="gerencia-pct">--</span><span class="gerencia-metaedital">--</span><span class="gerencia-pctedital">--</span><button class="gerencia-export-btn" title="Baixar polos desta carteira em Excel" aria-label="Baixar Excel">⬇</button></div>
+          <div class="gerencia-row" data-busca="Operações II"><span class="gerencia-nome">Gerente Operações II <small>Ary Oliveira Filho</small></span><span class="gerencia-pagantes">--</span><span class="gerencia-metamovel">--</span><span class="gerencia-pct">--</span><span class="gerencia-metaedital">--</span><span class="gerencia-pctedital">--</span><button class="gerencia-export-btn" title="Baixar polos desta carteira em Excel" aria-label="Baixar Excel">⬇</button></div>
+        </div>
+      </div>
+    </section>
 
-Antes de gerar o arquivo final, confirme comigo apenas se algo estiver ambíguo (ex.: carteira nova sem posição óbvia na ordem, ou dado faltante na tabela). Caso contrário, gere o arquivo direto.
+    <!-- SEÇÃO DE INSIGHTS (substituiu Rankings) -->
+    <section class="panel panel--insights">
+      <div class="rankings-main-header">
+        <span class="rankings-main-icon">💡</span>
+        <h1 class="rankings-main-title">Insights dos Polos</h1>
+        <p class="rankings-main-sub">Análise de pontos positivos e possíveis pontos de melhoria.</p>
+        <div class="rankings-header-divider">
+          <span class="rankings-header-divider-dot"></span>
+          <span class="rankings-header-divider-line"></span>
+          <span class="rankings-header-divider-dot"></span>
+        </div>
+      </div>
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      <div class="insights-grid">
+        <!-- Coluna positiva -->
+        <div class="insights-col insights-col--positivo">
+          <div class="insights-col-header">
+            <span class="insights-col-icon">🏆</span>
+            <h2 class="insights-col-title">Destaques Positivos</h2>
+          </div>
+          <ul class="insights-list" id="insightPositivos">
+            <li class="insight-item insight-item--loading">Aguardando dados...</li>
+          </ul>
+        </div>
+
+        <!-- Coluna de melhoria -->
+        <div class="insights-col insights-col--melhoria">
+          <div class="insights-col-header">
+            <span class="insights-col-icon">⚠️</span>
+            <h2 class="insights-col-title">Pontos de Melhoria</h2>
+          </div>
+          <ul class="insights-list" id="insightMelhorias">
+            <li class="insight-item insight-item--loading">Aguardando dados...</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel panel--regioes">
+      <div class="panel-header">
+        <div class="brand">
+          <span class="brand-icon">🌎</span>
+          <div class="brand-text">
+            <h1>Regiões</h1>
+            <p class="brand-sub">Consolidado dos indicadores agrupado por região</p>
+          </div>
+        </div>
+        <div class="grupo-filter-bar">
+          <div class="select-wrapper select-wrapper--sm">
+            <div class="custom-select-trigger" id="regiaoCarteiraSelectTrigger">Todas as carteiras</div>
+            <div class="custom-select-dropdown" id="regiaoCarteiraDropdown"></div>
+          </div>
+          <button class="clear-filters-btn clear-filters-btn--sm" id="clearRegiaoFiltroBtn">Limpar</button>
+          <button class="export-excel-btn export-excel-btn--sm" id="exportRegiaoBtn" disabled>
+            <span class="export-excel-icon">⬇️</span>
+            <span id="exportRegiaoLabel">Exportar</span>
+          </button>
+        </div>
+      </div>
+      <div class="gerencias-grid">
+        <div class="gerencias-col">
+          <div class="gerencias-col-title">
+            <span>Região</span>
+            <span>Pagantes</span>
+            <span>Meta Móvel</span>
+            <span>% Meta Móvel</span>
+            <span>Meta Edital</span>
+            <span>% Meta Edital</span>
+          </div>
+          <div id="regioesRows"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel panel--estados">
+      <div class="panel-header">
+        <div class="brand">
+          <span class="brand-icon">📍</span>
+          <div class="brand-text">
+            <h1>Estados</h1>
+            <p class="brand-sub">Consolidado dos indicadores agrupado por estado (UF)</p>
+          </div>
+        </div>
+        <div class="grupo-filter-bar">
+          <div class="select-wrapper select-wrapper--sm">
+            <div class="custom-select-trigger" id="estadoCarteiraSelectTrigger">Todas as carteiras</div>
+            <div class="custom-select-dropdown" id="estadoCarteiraDropdown"></div>
+          </div>
+          <button class="clear-filters-btn clear-filters-btn--sm" id="clearEstadoFiltroBtn">Limpar</button>
+          <button class="export-excel-btn export-excel-btn--sm" id="exportEstadoBtn" disabled>
+            <span class="export-excel-icon">⬇️</span>
+            <span id="exportEstadoLabel">Exportar</span>
+          </button>
+        </div>
+      </div>
+      <div class="gerencias-grid">
+        <div class="gerencias-col gerencias-col--scroll">
+          <div class="gerencias-col-title">
+            <span>UF</span>
+            <span>Pagantes</span>
+            <span>Meta Móvel</span>
+            <span>% Meta Móvel</span>
+            <span>Meta Edital</span>
+            <span>% Meta Edital</span>
+          </div>
+          <div id="estadosRows"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel panel--polos">
+      <div class="panel-header">
+        <div class="brand">
+          <span class="brand-icon">🏫</span>
+          <div class="brand-text">
+            <h1>Visão Detalhada dos Polos</h1>
+            <p class="brand-sub">Consulta detalhada dos polos e suas respectivas informações</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="polos-filter-bar">
+        <div class="search-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchGeral" class="filter-input-top" placeholder="Buscar por polo, carteira, analista...">
+        </div>
+
+        <div class="select-wrapper">
+          <div class="custom-select-trigger" id="carteiraSelectTrigger">Todas as carteiras</div>
+          <div class="custom-select-dropdown" id="carteiraDropdown"></div>
+        </div>
+
+        <button class="clear-filters-btn" id="clearFiltersBtn">Limpar</button>
+
+        <button class="export-excel-btn" id="exportExcelBtn" disabled>
+          <span class="export-excel-icon">⬇️</span>
+          <span id="exportExcelLabel">Exportar Excel</span>
+        </button>
+      </div>
+
+      <div class="polos-table-wrapper">
+        <table class="data-table" id="polosTable">
+          <thead>
+            <tr>
+              <th>Polo</th>
+              <th>Carteira</th>
+              <th>Analista</th>
+              <th class="txt-right">Pagamentos</th>
+              <th class="txt-right">Meta Móvel</th>
+              <th class="txt-right">% Meta Móvel</th>
+            </tr>
+          </thead>
+          <tbody id="polosTableBody">
+            <tr>
+              <td colspan="6" class="table-empty">Aguardando carregamento de dados...</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="table-pagination">
+          <span class="pagination-info" id="paginationInfo">Mostrando 0-0 de 0 polos</span>
+          <div class="pagination-buttons">
+            <button class="pag-btn" id="prevPageBtn" disabled>&larr; Anterior</button>
+            <button class="pag-btn" id="nextPageBtn" disabled>Próximo &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal de progresso — exibido durante a geração de qualquer exportação em Excel -->
+  <div class="export-modal-overlay" id="exportModalOverlay" aria-hidden="true">
+    <div class="export-modal" role="dialog" aria-modal="true" aria-labelledby="exportModalTitle">
+      <div class="export-modal-icon">
+        <span class="export-modal-spinner"></span>
+        <span class="export-modal-check">✓</span>
+      </div>
+      <h2 class="export-modal-title" id="exportModalTitle">Gerando planilha</h2>
+      <p class="export-modal-sub" id="exportModalSub">Isso pode levar alguns instantes...</p>
+
+      <ul class="export-modal-steps" id="exportModalSteps">
+        <li class="export-step" data-step="preparar"><span class="export-step-dot"></span><span class="export-step-label">Preparando polos</span></li>
+        <li class="export-step" data-step="carregar"><span class="export-step-dot"></span><span class="export-step-label">Carregando alunos</span></li>
+        <li class="export-step" data-step="filtrar"><span class="export-step-dot"></span><span class="export-step-label">Filtrando alunos</span></li>
+        <li class="export-step" data-step="montar"><span class="export-step-dot"></span><span class="export-step-label">Montando planilha</span></li>
+        <li class="export-step" data-step="gerar"><span class="export-step-dot"></span><span class="export-step-label">Gerando arquivo</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
