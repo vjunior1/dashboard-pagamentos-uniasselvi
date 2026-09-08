@@ -28,7 +28,7 @@ body {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: 3rem 1.5rem;
+  padding: calc(3rem + 52px) 1.5rem 3rem;
 }
 
 .page {
@@ -1320,4 +1320,47 @@ body {
 .panel--regioes .custom-select-dropdown,
 .panel--estados .custom-select-dropdown {
   z-index: 9999;
+}
+
+/* ── Faixa de navegação global ── */
+.dash-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  background: var(--preto);
+  border-bottom: 2px solid var(--cinza-borda);
+}
+
+.dash-topbar-btn {
+  padding: 8px 26px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  border: 2px solid var(--amarelo);
+  color: var(--amarelo);
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+.dash-topbar-btn:hover {
+  background: rgba(242, 194, 0, 0.1);
+}
+
+.dash-topbar-btn--active {
+  background: var(--amarelo);
+  color: var(--preto);
+  border-color: var(--amarelo);
+}
+
+.dash-topbar-btn--active:hover {
+  background: var(--amarelo-claro);
 }

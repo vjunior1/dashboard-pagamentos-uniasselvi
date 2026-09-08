@@ -1,10 +1,16 @@
 /* ============================================================
    CONFIGURAÇÃO
    ============================================================ */
+
+//PAGAMENTOS
 const SPREADSHEET_ID  = "10Lts1kA9GD1bjSlR1HoLi3mIJBBCXc58tf-jCgOq-lc";
 const GID_POLO        = "1827818115";           // Aba POLO (primeira aba)
 const GID_CONSOLIDADO = "778246193";   // Aba CONSOLIDADO
 const GID_ALUNO       = "976609691";   // Aba ALUNO (carregada sob demanda, apenas ao exportar)
+
+// CAPTAÇÃO - MATRICULADOS E INSCRITOS
+const GID_POLO_CAPTACAO        = "680288164";           // Aba CAPTACAO-POLO (primeira aba)
+const GID_CONSOLIDADO_CAPTACAO = "298804678";   // Aba CAPTACAO-CONSOLIDADO
 
 const URL_POLO        = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=${GID_POLO}`;
 const URL_CONSOLIDADO = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=${GID_CONSOLIDADO}`;
@@ -1242,12 +1248,22 @@ async function carregarDashboard() {
     // ── Polos + Insights ──
     processarAbaPolo(linhasPolo);
 
-    statusText.textContent = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+    // ── Data e hora da atualização: célula B19 da aba Consolidado ──
+    // (linha "DATA E HORA ATUALIZACAO"). Buscamos pelo rótulo, não pelo
+    // índice da linha, porque a planilha tem linhas em branco que são
+    // descartadas pelo parseCSV e deslocariam um índice fixo.
+    const linhaDataAtualizacao = linhasConsolidado.find(l =>
+      l[0] && l[0].normalize("NFD").replace(new RegExp("[\\u0300-\\u036f]", "g"), "").trim().toUpperCase().includes("DATA E HORA")
+    );
+    statusText.textContent = linhaDataAtualizacao && linhaDataAtualizacao[1]
+      ? linhaDataAtualizacao[1].trim()
+      : "--/--/---- --:--";
+
     setStatus("ok");
 
   } catch (erro) {
     console.error("[Dashboard] Erro ao carregar dados:", erro);
-    statusText.textContent = "--:--";
+    statusText.textContent = "--/--/---- --:--";
     setStatus("error");
   }
 }

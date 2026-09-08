@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard de Metas de Inscrições | UNIASSELVI</title>
+  <link rel="stylesheet" href="style_inscricoes.css">
+</head>
+
+<body>
+
+  <header class="dash-topbar">
+    <a href="index.html" class="dash-topbar-btn">💳 Meta Pagamentos</a>
+    <a href="inscricoes.html" class="dash-topbar-btn dash-topbar-btn--active">📋 Meta Inscrições</a>
+  </header>
+
+  <main class="page">
+
+    <section class="panel panel--top-dashboard">
+
+      <div class="panel-bg-text">UNIASSELVI</div>
+
+      <!-- Header do painel -->
+      <div class="panel-header">
+        <div class="brand">
+          <span class="brand-icon">📊</span>
+          <div class="brand-text">
+            <h1>Inscrições & Matrículas</h1>
+            <p class="brand-sub">Monitoramento em tempo real do volume de inscrições, matrículas e metas de captação.
+            </p>
+          </div>
+        </div>
+
+        <div class="update-wrapper">
+          <div class="timestamp-badge">
+            <span class="status-dot" id="statusDot"></span>
+            <span class="timestamp-label">Data e hora da atualização:</span>
+            <span class="timestamp-value" id="statusText">--/--/---- --:--</span>
+          </div>
+          <button class="refresh-btn" id="refreshBtn">
+            <span class="refresh-icon">⟳</span>
+            Atualizar dados
+          </button>
+        </div>
+      </div>
+
+      <!-- KPIs: Inscrições e Matrículas -->
+      <div class="kpi-duplo">
+
+        <div class="kpi-linha">
+          <span class="kpi-row-label">Inscrições</span>
+          <div class="kpi-vsep"></div>
+
+          <div class="kpi-volume">
+            <span class="val" id="val-inscritos-total">0</span>
+            <span class="lbl">Total de inscritos</span>
+          </div>
+
+          <div class="kpi-vsep"></div>
+
+          <div class="kpi-group">
+            <div class="kpi-group-title">Meta Móvel</div>
+            <div class="kpi-group-inner">
+              <div class="kpi-stat">
+                <span class="val" id="val-insc-movel-esperado">0</span>
+                <span class="lbl">Esperado</span>
+              </div>
+              <div class="kpi-stat">
+                <span class="val" id="val-insc-movel-pct">0,00%</span>
+                <span class="lbl">Atingido</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="kpi-vsep"></div>
+
+          <div class="kpi-group">
+            <div class="kpi-group-title">Meta Edital</div>
+            <div class="kpi-group-inner">
+              <div class="kpi-stat">
+                <span class="val" id="val-insc-edital-alvo">0</span>
+                <span class="lbl">Alvo</span>
+              </div>
+              <div class="kpi-stat">
+                <span class="val" id="val-insc-edital-pct">0,00%</span>
+                <span class="lbl">Progresso</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kpi-linha">
+          <span class="kpi-row-label">Matrículas</span>
+          <div class="kpi-vsep"></div>
+
+          <div class="kpi-volume">
+            <span class="val" id="val-matriculas-total">0</span>
+            <span class="lbl">Total de matriculados</span>
+          </div>
+
+          <div class="kpi-vsep"></div>
+
+          <div class="kpi-group">
+            <div class="kpi-group-title">Meta Móvel</div>
+            <div class="kpi-group-inner">
+              <div class="kpi-stat">
+                <span class="val" id="val-matr-movel-esperado">0</span>
+                <span class="lbl">Esperado</span>
+              </div>
+              <div class="kpi-stat">
+                <span class="val" id="val-matr-movel-pct">0,00%</span>
+                <span class="lbl">Atingido</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="kpi-vsep"></div>
+
+          <div class="kpi-group">
+            <div class="kpi-group-title">Meta Edital</div>
+            <div class="kpi-group-inner">
+              <div class="kpi-stat">
+                <span class="val" id="val-matr-edital-alvo">0</span>
+                <span class="lbl">Alvo</span>
+              </div>
+              <div class="kpi-stat">
+                <span class="val" id="val-matr-edital-pct">0,00%</span>
+                <span class="lbl">Progresso</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="panel panel--carteiras" style="margin-top: 1.5rem;">
+
+      <div class="panel-bg-text">CARTEIRAS</div>
+
+      <div class="panel-header" style="margin-bottom: 1.2rem;">
+        <div class="brand">
+          <span class="brand-icon">🗂️</span>
+          <div class="brand-text">
+            <h1>Carteiras & Gerências</h1>
+            <p class="brand-sub">Inscrições e matrículas por carteira comercial e diretoria de operações.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARTEIRAS -->
+      <div class="cg-section-label">Carteiras</div>
+      <div class="cg-grid" id="grid-carteiras"></div>
+
+      <!-- GERÊNCIAS -->
+      <div class="cg-section-label" style="margin-top: 1.6rem;">DIRETORIA DE Operações</div>
+      <div class="cg-grid" id="grid-gerencias"></div>
+
+    </section>
+
+    <section class="panel panel--insights" style="margin-top: 1.5rem;">
+      <div class="insights-header">
+        <span class="insights-lamp">💡</span>
+        <h2>Insights dos Polos</h2>
+        <p>Análise de pontos positivos e possíveis pontos de melhoria.</p>
+        <div class="insights-divider"><span class="dot"></span><span class="line"></span><span class="dot"></span></div>
+      </div>
+
+      <div class="filter-bar" style="margin-bottom: 1.2rem;">
+        <div class="uf-dropdown" id="insightsCarteiraDropdown">
+          <button type="button" class="uf-dropdown-btn" id="insightsCarteiraBtn">
+            <span id="insightsCarteiraLabel">Todas as carteiras</span>
+            <span class="uf-dropdown-arrow">▾</span>
+          </button>
+          <div class="uf-dropdown-panel" id="insightsCarteiraPanel">
+            <div class="uf-dropdown-actions">
+              <button type="button" class="uf-dropdown-action" id="insightsCarteiraSelectAll">Selecionar todos</button>
+              <button type="button" class="uf-dropdown-action" id="insightsCarteiraClearAll">Limpar</button>
+            </div>
+            <div class="uf-chips-wrapper" id="insights-carteira-options"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="insights-grid">
+        <div class="insights-col insights-col--positivo">
+          <div class="insights-col-title"><span>🏆</span> Destaques Positivos</div>
+          <div id="insights-positivos-list"></div>
+        </div>
+
+        <div class="insights-col insights-col--melhoria">
+          <div class="insights-col-title"><span>⚠️</span> Pontos de Melhoria</div>
+          <div id="insights-melhoria-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel panel--regioes" style="margin-top: 1.5rem;">
+
+      <div class="panel-bg-text">REGIÕES</div>
+
+      <div class="panel-header" style="margin-bottom: 1.2rem;">
+        <div class="brand">
+          <span class="brand-icon">🌎</span>
+          <div class="brand-text">
+            <h1>Regiões</h1>
+            <p class="brand-sub">Inscrições e matrículas consolidadas por região geográfica.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-bar" style="margin-bottom: 1.2rem;">
+        <div class="uf-dropdown" id="regiaoCarteiraDropdown">
+          <button type="button" class="uf-dropdown-btn" id="regiaoCarteiraBtn">
+            <span id="regiaoCarteiraLabel">Todas as carteiras</span>
+            <span class="uf-dropdown-arrow">▾</span>
+          </button>
+          <div class="uf-dropdown-panel" id="regiaoCarteiraPanel">
+            <div class="uf-dropdown-actions">
+              <button type="button" class="uf-dropdown-action" id="regiaoCarteiraSelectAll">Selecionar
+                todos</button>
+              <button type="button" class="uf-dropdown-action" id="regiaoCarteiraClearAll">Limpar</button>
+            </div>
+            <div class="uf-chips-wrapper" id="regiao-carteira-options"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cg-grid" id="grid-regioes"></div>
+
+    </section>
+
+    <section class="panel panel--estados" style="margin-top: 1.5rem;">
+
+      <div class="panel-bg-text">ESTADOS</div>
+
+      <div class="panel-header" style="margin-bottom: 1.2rem;">
+        <div class="brand">
+          <span class="brand-icon">🗺️</span>
+          <div class="brand-text">
+            <h1>Estado</h1>
+            <p class="brand-sub">Inscrições e matrículas consolidadas por UF.</p>
+          </div>
+        </div>
+      </div>
+      <div class="filter-bar filter-bar--estados">
+        <div class="filter-bar-left">
+          <input type="text" id="estados-search" class="filter-search" placeholder="Buscar por UF (ex: SC)">
+
+          <div class="uf-dropdown" id="estadosCarteiraDropdown">
+            <button type="button" class="uf-dropdown-btn" id="estadosCarteiraBtn">
+              <span id="estadosCarteiraLabel">Todas as carteiras</span>
+              <span class="uf-dropdown-arrow">▾</span>
+            </button>
+            <div class="uf-dropdown-panel" id="estadosCarteiraPanel">
+              <div class="uf-dropdown-actions">
+                <button type="button" class="uf-dropdown-action" id="estadosCarteiraSelectAll">Selecionar todos</button>
+                <button type="button" class="uf-dropdown-action" id="estadosCarteiraClearAll">Limpar</button>
+              </div>
+              <div class="uf-chips-wrapper" id="estados-carteira-options"></div>
+            </div>
+          </div>
+
+          <div class="uf-dropdown" id="ufDropdown">
+            <button type="button" class="uf-dropdown-btn" id="ufDropdownBtn">
+              <span id="ufDropdownLabel">Filtrar por UF</span>
+              <span class="uf-dropdown-arrow">▾</span>
+            </button>
+
+            <div class="uf-dropdown-panel" id="ufDropdownPanel">
+              <div class="uf-dropdown-actions">
+                <button type="button" class="uf-dropdown-action" id="ufSelectAll">Selecionar todos</button>
+                <button type="button" class="uf-dropdown-action" id="ufClearAll">Limpar</button>
+              </div>
+              <div class="uf-chips-wrapper" id="estados-checkboxes"></div>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="filter-btn-export" id="estadosExportBtn">
+          <span class="filter-btn-export-icon">⬇</span>
+          Exportar Excel (<span id="estadosExportCount">0</span>)
+        </button>
+      </div>
+
+      <div class="scroll-container">
+        <table class="polos-table">
+          <thead>
+            <tr>
+              <th class="th-base">Estado</th>
+              <th class="th-sub th-sub--insc-start">Inscritos</th>
+              <th class="th-sub th-sub--insc">Meta Móvel</th>
+              <th class="th-sub th-sub--insc">% M. Móvel</th>
+              <th class="th-sub th-sub--insc">Meta Edital</th>
+              <th class="th-sub th-sub--insc-end">% M. Edital</th>
+              <th class="th-sub th-sub--matr-start">Matrículas</th>
+              <th class="th-sub th-sub--matr">Meta Móvel</th>
+              <th class="th-sub th-sub--matr">% M. Móvel</th>
+              <th class="th-sub th-sub--matr">Meta Edital</th>
+              <th class="th-sub th-sub--matr-end">% M. Edital</th>
+            </tr>
+          </thead>
+          <tbody id="estados-table-body"></tbody>
+        </table>
+      </div>
+
+    </section>
+
+    <section class="panel panel--polos-detalhe" style="margin-top: 1.5rem;">
+
+      <div class="panel-bg-text">POLOS</div>
+
+      <div class="panel-header" style="margin-bottom: 1.2rem;">
+        <div class="brand">
+          <span class="brand-icon">🏫</span>
+          <div class="brand-text">
+            <h1>Visão Detalhada dos Polos</h1>
+            <p class="brand-sub">Consulta detalhada dos polos e suas respectivas informações.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-bar filter-bar--polos">
+        <input type="text" id="polos-search" class="filter-search filter-search--grow"
+          placeholder="Buscar por polo, carteira, analista...">
+
+        <div class="uf-dropdown" id="polosCarteiraDropdown">
+          <button type="button" class="uf-dropdown-btn" id="polosCarteiraBtn">
+            <span id="polosCarteiraLabel">Todas as carteiras</span>
+            <span class="uf-dropdown-arrow">▾</span>
+          </button>
+          <div class="uf-dropdown-panel" id="polosCarteiraPanel">
+            <div class="uf-dropdown-actions">
+              <button type="button" class="uf-dropdown-action" id="carteiraSelectAll">Selecionar todos</button>
+              <button type="button" class="uf-dropdown-action" id="carteiraClearAll">Limpar</button>
+            </div>
+            <div class="uf-chips-wrapper" id="polos-carteira-options"></div>
+          </div>
+        </div>
+
+        <button type="button" class="filter-btn" id="polosClearBtn">Limpar</button>
+
+        <button type="button" class="filter-btn-export" id="polosExportBtn">
+          <span class="filter-btn-export-icon">⬇</span>
+          Exportar Excel (<span id="polosExportCount">0</span>)
+        </button>
+      </div>
+
+      <div class="scroll-container">
+        <table class="polos-table">
+          <thead>
+            <tr>
+              <th class="th-base">Polo</th>
+              <th class="th-base">Carteira</th>
+              <th class="th-sub th-sub--insc-start">Inscritos</th>
+              <th class="th-sub th-sub--insc">Meta Móvel</th>
+              <th class="th-sub th-sub--insc-end">% Meta Móvel</th>
+              <th class="th-sub th-sub--matr-start">Matrículas</th>
+              <th class="th-sub th-sub--matr">Meta Móvel</th>
+              <th class="th-sub th-sub--matr-end">% Meta Móvel</th>
+            </tr>
+          </thead>
+          <tbody id="polos-table-body"></tbody>
+        </table>
+      </div>
+
+    </section>
+
+    <section class="panel panel--mapa-alerta" style="margin-top: 1.5rem;">
+
+      <div class="panel-bg-text">MAPA DE CALOR</div>
+
+      <div class="panel-header" style="margin-bottom: 1.2rem;">
+        <div class="brand">
+          <span class="brand-icon">🗺️</span>
+          <div class="brand-text">
+            <h1 id="mapaTitle">Mapa de Alerta de Inscrições</h1>
+            <p class="brand-sub" id="mapaSubtitle">Áreas destacadas em amarelo/laranja/vermelho indicam estados abaixo da Meta Móvel de Inscrição. Passe o mouse para ver os números; clique para abrir os polos por cidade.</p>
+          </div>
+        </div>
+
+        <div class="metric-toggle" id="mapaMetricToggle">
+          <button type="button" class="metric-toggle-btn active" data-metric="insc">Inscrições</button>
+          <button type="button" class="metric-toggle-btn" data-metric="matr">Matrículas</button>
+        </div>
+      </div>
+
+      <div class="band-summary" id="mapaBandSummary"></div>
+
+      <div class="map-card">
+        <div class="map-frame">
+          <svg id="mapaBrSvg" viewBox="0 0 640 622" xmlns="http://www.w3.org/2000/svg">
+            <g id="mapaStatesLayer"></g>
+          </svg>
+          <canvas id="mapaCloudCanvas" width="640" height="622"></canvas>
+          <svg id="mapaLabelsSvg" viewBox="0 0 640 622" xmlns="http://www.w3.org/2000/svg">
+            <g id="mapaLabelsLayer"></g>
+          </svg>
+        </div>
+        <p class="map-hint">Passe o mouse sobre um estado para ver os números · clique para abrir os polos por cidade</p>
+      </div>
+
+    </section>
+
+  </main>
+
+  <div id="mapaTooltip"></div>
+
+  <div class="modal-backdrop" id="mapaModalBackdrop">
+    <div class="modal-panel" id="mapaModalPanel">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="mapaModalTitle">Estado</div>
+          <div class="modal-subtitle" id="mapaModalSubtitle">Polos por cidade</div>
+        </div>
+        <button class="modal-close" id="mapaModalClose" aria-label="Fechar" type="button">✕</button>
+      </div>
+      <div class="modal-summary" id="mapaModalSummary"></div>
+      <div class="modal-cities-label" id="mapaModalCitiesLabel">Polos por cidade — Inscrições</div>
+      <div class="heat-grid" id="mapaModalGrid"></div>
+    </div>
+  </div>
+
+  <script src="br_state_paths.js"></script>
+  <script src="script-inscricoes.js"></script>
+</body>
+
+</html>
