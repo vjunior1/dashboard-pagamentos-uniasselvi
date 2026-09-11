@@ -245,13 +245,15 @@ function processarAbaPolo(linhas) {
     analista:   inlineTrim(l[idx["ANALISTA"]]      ?? ""),
     estado:     inlineTrim(l[idx["ESTADO"]]        ?? ""),
     regiao:     inlineTrim(l[idx["REGIAO"]]        ?? ""),
-    pagantes:   parseNumeroBR(l[idx["PAGANTES"]]        ?? ""),
-    metaMovel:  parseNumeroBR(l[idx["META MOVEL"]]      ?? ""),
-    pctMovel:   parseNumeroBR(l[idx["% META MOVEL"]]    ?? ""),
-    metaEdital: parseNumeroBR(l[idx["META EDITAL"]]     ?? ""),
-    pctEdital:  parseNumeroBR(l[idx["% META EDITAL"]]   ?? ""),
-    metaCiclo:  parseNumeroBR(l[idx["META CICLO"]]      ?? ""),
-    pctCiclo:   parseNumeroBR(l[idx["% META CICLO"]]    ?? ""),
+    pagantes:     parseNumeroBR(l[idx["PAGANTES"]]        ?? ""),
+    pagantesYoY:  parseNumeroBR(l[idx["PAGANTES_YOY"]]    ?? ""),
+    metaMovel:    parseNumeroBR(l[idx["META MOVEL"]]      ?? ""),
+    pctMovel:     parseNumeroBR(l[idx["% META MOVEL"]]    ?? ""),
+    gapMetaMovel: parseNumeroBR(l[idx["GAP META MOVEL"]]  ?? ""),
+    metaEdital:   parseNumeroBR(l[idx["META EDITAL"]]     ?? ""),
+    pctEdital:    parseNumeroBR(l[idx["% META EDITAL"]]   ?? ""),
+    metaCiclo:    parseNumeroBR(l[idx["META CICLO"]]      ?? ""),
+    pctCiclo:     parseNumeroBR(l[idx["% META CICLO"]]    ?? ""),
   })).filter(item => item.polo !== "");
 
   // Carteiras únicas para dropdown
@@ -504,30 +506,35 @@ async function _gerarPlanilhaExcelInterna(dados, nomeArquivoBase, btnRef, labelR
 
   // ── Aba Polos em chunks (500 linhas por vez) ──
   const linhasExport = await processarEmChunks(dados, 500, item => ({
-    "COD_POLO":        item.codPolo,
-    "POLO":            item.polo,
-    "PARCEIRO":        item.parceiro,
-    "CARTEIRA":        item.carteira,
-    "ANALISTA":        item.analista,
-    "PAGANTES":        item.pagantes,
-    "META EDITAL":     item.metaEdital,
-    "% META EDITAL":   item.pctEdital / 100,
-    "META MÓVEL":      item.metaMovel,
-    "% META MÓVEL":    item.pctMovel / 100,
-    "META CICLO":      item.metaCiclo,
-    "% META CICLO":    item.pctCiclo / 100,
+    "COD_POLO":         item.codPolo,
+    "POLO":             item.polo,
+    "ESTADO":           item.estado,
+    "REGIÃO":           item.regiao,
+    "PARCEIRO":         item.parceiro,
+    "CARTEIRA":         item.carteira,
+    "ANALISTA":         item.analista,
+    "PAGANTES":         item.pagantes,
+    "PAGANTES_YOY":     item.pagantesYoY,
+    "META EDITAL":      item.metaEdital,
+    "% META EDITAL":    item.pctEdital / 100,
+    "META MÓVEL":       item.metaMovel,
+    "% META MÓVEL":     item.pctMovel / 100,
+    "GAP META MÓVEL":   item.gapMetaMovel,
+    "META CICLO":       item.metaCiclo,
+    "% META CICLO":     item.pctCiclo / 100,
   }));
 
   const worksheetPolos = XLSX.utils.json_to_sheet(linhasExport);
 
   worksheetPolos["!cols"] = [
-    { wch: 12 }, { wch: 30 }, { wch: 22 }, { wch: 26 }, { wch: 24 },
-    { wch: 12 }, { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 14 },
-    { wch: 14 }, { wch: 14 },
+    { wch: 12 }, { wch: 30 }, { wch: 8 },  { wch: 12 }, { wch: 22 },
+    { wch: 26 }, { wch: 24 }, { wch: 12 }, { wch: 14 }, { wch: 14 },
+    { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 14 },
+    { wch: 14 },
   ];
 
   // Formata colunas de percentual como % nativo do Excel
-  const colunasPercentual = ["H", "J", "L"];
+  const colunasPercentual = ["K", "M", "P"];
   const totalLinhas = linhasExport.length;
   colunasPercentual.forEach(col => {
     for (let r = 2; r <= totalLinhas + 1; r++) {
